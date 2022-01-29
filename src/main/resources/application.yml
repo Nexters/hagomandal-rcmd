@@ -1,0 +1,6 @@
+spring:
+  neo4j:
+    url: bolt://${NEO4J_HOST}:${NEO4J_PORT}
+    authentication:
+      username: ${NEO4J_USERNAME}
+      password: ${NEO4J_PASSWORD}
