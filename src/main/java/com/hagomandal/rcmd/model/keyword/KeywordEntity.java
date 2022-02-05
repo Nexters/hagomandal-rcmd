@@ -1,7 +1,8 @@
 package com.hagomandal.rcmd.model.keyword;
 
 import java.util.List;
-import lombok.Getter;
+import java.util.Objects;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
@@ -9,7 +10,7 @@ import org.springframework.data.neo4j.core.schema.Property;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.data.neo4j.core.schema.Relationship.Direction;
 
-@Getter
+@Data
 @RequiredArgsConstructor(staticName = "of")
 @Node("Keyword")
 public class KeywordEntity {
@@ -18,8 +19,22 @@ public class KeywordEntity {
     private final String keyword;
 
     @Property
-    private final boolean representative;
+    private int frequency;
 
-    @Relationship(type = "FOLLOW", direction = Direction.OUTGOING)
-    private final List<SynonymRelationship> followings;
+    @Relationship(type = "FLOW", direction = Direction.OUTGOING)
+    private List<FlowRelationship> flows;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof KeywordEntity) {
+            KeywordEntity target = (KeywordEntity) o;
+            return keyword.equals(target.getKeyword());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(keyword);
+    }
 }

@@ -1,0 +1,138 @@
+[
+  {
+    "info": {
+      "job_type_0": "software_developer",
+      "job_type_1": "backend_engineer",
+      "interests": ["java", "spring", "aws", "elasticsearch"]
+    },
+    "goal": {
+      "desc": "이직하기",
+      "goal_level": 0,
+      "children": [
+        {
+          "desc": "이력서 업데이트",
+          "goal_level": 1,
+          "children": [
+            {
+              "desc": "현재 회사 경력 업데이트",
+              "goal_level": 2,
+              "children": [],
+              "actions": []
+            },
+            {
+              "desc": "개인 프로젝트 진행 내용 업데이트",
+              "goal_level": 2,
+              "children": [],
+              "actions": []
+            },
+            {
+              "desc": "기술 스택 업데이트",
+              "goal_level": 2,
+              "children": [],
+              "actions": []
+            },
+            {
+              "desc": "자기소개 업데이트",
+              "goal_level": 2,
+              "children": [],
+              "actions": []
+            }
+          ],
+          "actions": []
+        },
+        {
+          "desc": "JD 탐색",
+          "goal_level": 1,
+          "children": [
+            {
+              "desc": "1티어 회사 JD 리스트업",
+              "goal_level": 2,
+              "children": [],
+              "actions": []
+            },
+            {
+              "desc": "스타트업 JD 리스트업",
+              "goal_level": 2,
+              "children": [],
+              "actions": []
+            },
+            {
+              "desc": "기술 스택이 맞지 않지만 흥미로운 JD 리스트업",
+              "goal_level": 2,
+              "children": [],
+              "actions": []
+            },
+            {
+              "desc": "지원 우선순위 설정",
+              "goal_level": 2,
+              "children": [],
+              "actions": []
+            }
+          ]
+        },
+        {
+          "desc": "CS 기본기 점검",
+          "goal_level": 1,
+          "children": [
+            {
+              "desc": "leetcode 문제 30개 풀이",
+              "goal_level": 2,
+              "children": [],
+              "actions": []
+            },
+            {
+              "desc": "데이터베이스 기본 지식 점검",
+              "goal_level": 2,
+              "children": [],
+              "actions": []
+            },
+            {
+              "desc": "네트워킹 기본 지식 점검",
+              "goal_level": 2,
+              "children": [],
+              "actions": []
+            },
+            {
+              "desc": "그 외 CS 필수 지식 리스트업 및 점검",
+              "goal_level": 2,
+              "children": [],
+              "actions": []
+            }
+          ],
+          "actions": []
+        },
+        {
+          "desc": "면접 준비",
+          "goal_level": 1,
+          "children": [
+            {
+              "desc": "JD 상으로 필수 기술에 대한 질문 대비",
+              "goal_level": 2,
+              "children": [],
+              "actions": []
+            },
+            {
+              "desc": "현재 회사 경력에 대한 질문 대비",
+              "goal_level": 2,
+              "children": [],
+              "actions": []
+            },
+            {
+              "desc": "추구하는 개발 문화, 조직 문화에 대한 내용 정리",
+              "goal_level": 2,
+              "children": [],
+              "actions": []
+            },
+            {
+              "desc": "짧은 이직 기간에 대한 변명 준비",
+              "goal_level": 2,
+              "children": [],
+              "actions": []
+            }
+          ]
+        }
+      ],
+      "actions": []
+    }
+  }
+]

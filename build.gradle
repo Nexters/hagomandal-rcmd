@@ -10,6 +10,7 @@ sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -19,6 +20,10 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
+    implementation 'com.github.shin285:KOMORAN:3.3.9'
+    implementation 'com.google.guava:guava:31.0.1-jre'
+
+    testImplementation 'commons-io:commons-io:2.11.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
 

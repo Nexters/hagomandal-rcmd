@@ -1,4 +1,4 @@
-package com.hagomandal.rcmd.model.keyword;
+package com.hagomandal.rcmd.model.synonym;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.neo4j.core.schema.RelationshipId;
@@ -15,7 +15,7 @@ public class SynonymRelationship {
     private final float weight;
 
     @TargetNode
-    private final KeywordEntity keyword;
+    private final WordEntity word;
 
     public float getWeight() {
         return weight;
