@@ -1,4 +1,4 @@
-package com.hagomandal.rcmd.model.synonym;
+package com.hagomandal.rcmd.model.graph.synonym;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.neo4j.core.schema.RelationshipId;

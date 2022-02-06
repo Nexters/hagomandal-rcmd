@@ -1,7 +1,9 @@
 package com.hagomandal.rcmd.service;
 
-import com.hagomandal.rcmd.model.synonym.WordEntity;
-import com.hagomandal.rcmd.model.synonym.SynonymRelationship;
+import com.hagomandal.rcmd.component.MorphemeAnalyser;
+import com.hagomandal.rcmd.model.graph.keyword.KeywordEntity;
+import com.hagomandal.rcmd.model.graph.synonym.SynonymRelationship;
+import com.hagomandal.rcmd.model.graph.synonym.WordEntity;
 import com.hagomandal.rcmd.repository.SynonymRepository;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,6 +11,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service
@@ -28,6 +33,7 @@ public class SynonymGraphServiceImpl implements SynonymGraphService {
     private boolean reconstructing = false;
 
     private final SynonymRepository synonymRepository;
+    private final MorphemeAnalyser morphemeAnalyser;
 
     @Override
     public String resetGraph() {
@@ -47,6 +53,22 @@ public class SynonymGraphServiceImpl implements SynonymGraphService {
         resetGraphWithDict(dictPath);
 
         return "requested";
+    }
+
+    @Override
+    public Mono<Set<String>> extractKeywords(String phrase) {
+        Set<String> keywords = morphemeAnalyser.extractKeywords(phrase);
+        Flux<WordEntity> repKeywordFlux = Flux.fromIterable(keywords)
+            .flatMap(synonymRepository::findRepSynonym)
+            .filter(Objects::nonNull);
+
+        return repKeywordFlux
+            .map(WordEntity::getWord)
+            .collectList()
+            .map(repKeywordList -> {
+                keywords.addAll(repKeywordList);
+                return keywords;
+            });
     }
 
     public void resetGraphWithDict(Path dictPath) {

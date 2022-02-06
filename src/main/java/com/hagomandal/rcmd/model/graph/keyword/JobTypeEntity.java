@@ -1,6 +1,6 @@
-package com.hagomandal.rcmd.model.keyword;
+package com.hagomandal.rcmd.model.graph.keyword;
 
-import com.hagomandal.rcmd.model.synonym.SynonymRelationship;
+import com.hagomandal.rcmd.model.graph.synonym.SynonymRelationship;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

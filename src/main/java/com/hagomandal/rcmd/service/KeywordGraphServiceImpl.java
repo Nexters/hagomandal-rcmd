@@ -1,14 +1,16 @@
 package com.hagomandal.rcmd.service;
 
 import com.hagomandal.rcmd.component.MorphemeAnalyser;
+import com.hagomandal.rcmd.model.SearchKeyword;
 import com.hagomandal.rcmd.model.input.GoalDetail;
 import com.hagomandal.rcmd.model.input.Info;
 import com.hagomandal.rcmd.model.input.Mandalart;
-import com.hagomandal.rcmd.model.keyword.FlowRelationship;
-import com.hagomandal.rcmd.model.keyword.KeywordEntity;
+import com.hagomandal.rcmd.model.graph.keyword.FlowRelationship;
+import com.hagomandal.rcmd.model.graph.keyword.KeywordEntity;
 import com.hagomandal.rcmd.repository.KeywordRepository;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,6 +30,9 @@ import reactor.core.publisher.Mono;
 @Service
 @RequiredArgsConstructor
 public class KeywordGraphServiceImpl implements KeywordGraphService {
+
+    private static final float FREQUENCY_WEIGHT = 1.5f;
+    private static final float RELATION_WEIGHT = 4.0f;
 
     private final KeywordRepository keywordRepository;
     private final MorphemeAnalyser morphemeAnalyser;
@@ -63,13 +68,13 @@ public class KeywordGraphServiceImpl implements KeywordGraphService {
                 srcKeywordEntityList.stream().forEach(_srcKeywordEntity -> {
                     List<FlowRelationship> cpFlowList = new ArrayList<>();
                     cpFlowList.addAll(flowList);
-                    _srcKeywordEntity.getFlows().stream().forEach(_flow -> {
+                    _srcKeywordEntity.getOutFlows().stream().forEach(_flow -> {
                         if (cpFlowList.contains(_flow)) {
                             _flow.setWeight(_flow.getWeight() + 1);
                             cpFlowList.remove(_flow);
                         }
                     });
-                    _srcKeywordEntity.getFlows().addAll(cpFlowList);
+                    _srcKeywordEntity.getOutFlows().addAll(cpFlowList);
                 });
 
                 keywordEntitySet.addAll(srcKeywordEntityList);
@@ -101,6 +106,26 @@ public class KeywordGraphServiceImpl implements KeywordGraphService {
         updatePartial(mandalart.getGoal().getChildren().get(3), mandalart.getInfo()).block();
 
         return Mono.just(keywordEntityList);
+    }
+
+    @Override
+    public Mono<List<SearchKeyword>> retrieveSearchKeywords(List<String> keywords, Info info, int targetLevel) {
+        return Flux.fromIterable(keywords)
+            .parallel()
+            .flatMap(_kw -> keywordRepository.findSearchKeywords(_kw, info.getJobType0(), targetLevel))
+            .sequential()
+            .map(_ke -> SearchKeyword.of(_ke.getKeyword(), getKeywordFrequencyFactor(_ke)))
+            .collectList()
+            .map(_searchKeywordList -> new ArrayList<>(new HashSet<>(_searchKeywordList)))   // 중복 제거
+            .map(_searchKeywordList -> {
+                _searchKeywordList.sort(Comparator.comparingDouble(SearchKeyword::getWeight).reversed());
+                return _searchKeywordList;
+            });
+    }
+
+    private float getKeywordFrequencyFactor(KeywordEntity keywordEntity) {
+        return FREQUENCY_WEIGHT * keywordEntity.getFrequency()
+            + RELATION_WEIGHT * keywordEntity.getInFlows().stream().map(flow -> flow.getWeight()).reduce((w1, w2) -> w1 + w2).orElse(0.0f);
     }
 
     @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package com.hagomandal.rcmd.model.synonym;
+package com.hagomandal.rcmd.model.graph.synonym;
 
 import java.util.List;
 import lombok.Getter;

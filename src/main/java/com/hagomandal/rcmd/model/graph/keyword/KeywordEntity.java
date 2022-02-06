@@ -1,4 +1,4 @@
-package com.hagomandal.rcmd.model.keyword;
+package com.hagomandal.rcmd.model.graph.keyword;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +22,10 @@ public class KeywordEntity {
     private int frequency;
 
     @Relationship(type = "FLOW", direction = Direction.OUTGOING)
-    private List<FlowRelationship> flows;
+    private List<FlowRelationship> outFlows;
+
+    @Relationship(type = "FLOW", direction = Direction.INCOMING)
+    private List<FlowRelationship> inFlows;
 
     @Override
     public boolean equals(Object o) {

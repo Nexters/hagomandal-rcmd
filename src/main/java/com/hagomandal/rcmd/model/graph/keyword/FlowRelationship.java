@@ -1,8 +1,7 @@
-package com.hagomandal.rcmd.model.keyword;
+package com.hagomandal.rcmd.model.graph.keyword;
 
 import java.util.Objects;
 import lombok.Data;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.neo4j.core.schema.RelationshipId;
 import org.springframework.data.neo4j.core.schema.RelationshipProperties;
