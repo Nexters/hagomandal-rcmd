@@ -4,3 +4,7 @@ spring:
     authentication:
       username: neo4j
       password: secret
+
+elasticsearch:
+  host: localhost
+  port: 9200
