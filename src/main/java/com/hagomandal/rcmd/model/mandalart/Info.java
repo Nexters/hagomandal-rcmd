@@ -1,4 +1,4 @@
-package com.hagomandal.rcmd.model.input;
+package com.hagomandal.rcmd.model.mandalart;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

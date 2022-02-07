@@ -3,8 +3,8 @@ package com.hagomandal.rcmd.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.hagomandal.rcmd.TestUtils;
 import com.hagomandal.rcmd.model.SearchKeyword;
-import com.hagomandal.rcmd.model.input.Info;
-import com.hagomandal.rcmd.model.input.Mandalart;
+import com.hagomandal.rcmd.model.mandalart.Info;
+import com.hagomandal.rcmd.model.mandalart.Mandalart;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -32,6 +32,7 @@ public class KeywordGraphServiceImplSpringBootTest {
     void test_update() throws IOException, URISyntaxException, InterruptedException {
         Mandalart sample = TestUtils.deserializeTo("sample/sample_mandalart_1.json", new TypeReference<List<Mandalart>>() {}).get(0);
         target.update(sample).block();
+        Thread.sleep(5 * 1000L);
     }
 
     @Test

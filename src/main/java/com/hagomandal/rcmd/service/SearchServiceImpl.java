@@ -14,16 +14,14 @@ import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
 import co.elastic.clients.elasticsearch.core.bulk.IndexOperation;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
-import co.elastic.clients.json.jsonb.JsonbJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hagomandal.rcmd.config.ElasticsearchProperties;
 import com.hagomandal.rcmd.model.GoalDocument;
 import com.hagomandal.rcmd.model.SearchKeyword;
-import com.hagomandal.rcmd.model.input.GoalDetail;
-import com.hagomandal.rcmd.model.input.Info;
-import com.hagomandal.rcmd.model.input.Mandalart;
+import com.hagomandal.rcmd.model.mandalart.GoalDetail;
+import com.hagomandal.rcmd.model.mandalart.Info;
+import com.hagomandal.rcmd.model.mandalart.Mandalart;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +82,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public Mono<SearchResponse<GoalDocument>> search(List<SearchKeyword> searchKeywordList, int goalLevel, Info info) {
+    public Mono<SearchResponse<GoalDocument>> search(List<SearchKeyword> searchKeywordList, int goalLevel, String jobType0) {
         List<SearchKeyword> queryKeywordList;
         if (searchKeywordList.size() > MAX_SEARCH_KEYWORD_COUNT) {
             queryKeywordList = searchKeywordList.subList(0, MAX_SEARCH_KEYWORD_COUNT);
@@ -101,7 +99,7 @@ public class SearchServiceImpl implements SearchService {
             .collect(Collectors.toList());
         rootQueryBuilder.should(matchQueryList).minimumShouldMatch(MINIMUM_SHOULD_MATCH);
 
-        Query jobType0Query = Query.of(_builder -> _builder.term(buildTermQuery("jobType0", info.getJobType0())));
+        Query jobType0Query = Query.of(_builder -> _builder.term(buildTermQuery("jobType0", jobType0)));
         Query goalLevelQuery = Query.of(_builder -> _builder.term(buildTermQuery("level", goalLevel)));
         rootQueryBuilder.filter(jobType0Query, goalLevelQuery);
 

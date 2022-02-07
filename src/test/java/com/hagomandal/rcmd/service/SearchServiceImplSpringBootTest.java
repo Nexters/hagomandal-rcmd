@@ -6,8 +6,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.hagomandal.rcmd.TestUtils;
 import com.hagomandal.rcmd.model.GoalDocument;
 import com.hagomandal.rcmd.model.SearchKeyword;
-import com.hagomandal.rcmd.model.input.Info;
-import com.hagomandal.rcmd.model.input.Mandalart;
+import com.hagomandal.rcmd.model.mandalart.Info;
+import com.hagomandal.rcmd.model.mandalart.Mandalart;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -34,7 +34,7 @@ public class SearchServiceImplSpringBootTest {
         SearchResponse<GoalDocument> searchResponse = target.search(List.of(
             SearchKeyword.of("스타트업", 4.0f),
             SearchKeyword.of("지원", 2.0f)
-        ), 2, new Info("software_developer", "backend_engineer", List.of())).block();
+        ), 2, "software_developer").block();
         System.out.println(searchResponse.hits().hits().stream().map(hit -> hit.source()).collect(Collectors.toList()));
     }
 }

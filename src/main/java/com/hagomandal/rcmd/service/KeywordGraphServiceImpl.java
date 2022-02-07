@@ -2,9 +2,9 @@ package com.hagomandal.rcmd.service;
 
 import com.hagomandal.rcmd.component.MorphemeAnalyser;
 import com.hagomandal.rcmd.model.SearchKeyword;
-import com.hagomandal.rcmd.model.input.GoalDetail;
-import com.hagomandal.rcmd.model.input.Info;
-import com.hagomandal.rcmd.model.input.Mandalart;
+import com.hagomandal.rcmd.model.mandalart.GoalDetail;
+import com.hagomandal.rcmd.model.mandalart.Info;
+import com.hagomandal.rcmd.model.mandalart.Mandalart;
 import com.hagomandal.rcmd.model.graph.keyword.FlowRelationship;
 import com.hagomandal.rcmd.model.graph.keyword.KeywordEntity;
 import com.hagomandal.rcmd.repository.KeywordRepository;
@@ -31,8 +31,8 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class KeywordGraphServiceImpl implements KeywordGraphService {
 
-    private static final float FREQUENCY_WEIGHT = 1.5f;
-    private static final float RELATION_WEIGHT = 4.0f;
+    private static final float FREQUENCY_WEIGHT = 0.5f;
+    private static final float RELATION_WEIGHT = 2.0f;
 
     private final KeywordRepository keywordRepository;
     private final MorphemeAnalyser morphemeAnalyser;
@@ -92,20 +92,17 @@ public class KeywordGraphServiceImpl implements KeywordGraphService {
         allKeywords.addAll(morphemeAnalyser.extractKeywords(mandalart.getGoal().getDesc()));
         mandalart.getGoal().getChildren().stream().forEach(_midGoal -> {
             allKeywords.addAll(morphemeAnalyser.extractKeywords(_midGoal.getDesc()));
-            _midGoal.getChildren().forEach(_leafGoal -> {
-                allKeywords.addAll(morphemeAnalyser.extractKeywords(_leafGoal.getDesc()));
-            });
+            _midGoal.getChildren().forEach(_leafGoal -> allKeywords.addAll(morphemeAnalyser.extractKeywords(_leafGoal.getDesc())));
         });
 
-        // TODO: 비동기로 해결 필요
-        List<KeywordEntity> keywordEntityList = keywordRepository.findOrCreateWithKeywords(allKeywords).collectList().block();
-        updatePartial(mandalart.getGoal(), mandalart.getInfo()).block();
-        updatePartial(mandalart.getGoal().getChildren().get(0), mandalart.getInfo()).block();
-        updatePartial(mandalart.getGoal().getChildren().get(1), mandalart.getInfo()).block();
-        updatePartial(mandalart.getGoal().getChildren().get(2), mandalart.getInfo()).block();
-        updatePartial(mandalart.getGoal().getChildren().get(3), mandalart.getInfo()).block();
-
-        return Mono.just(keywordEntityList);
+        return keywordRepository.findOrCreateWithKeywords(allKeywords).collectList()
+            .doOnSuccess(_keywordEntityList -> updatePartial(mandalart.getGoal(), mandalart.getInfo())
+                    .flatMap(_r -> updatePartial(mandalart.getGoal().getChildren().get(0), mandalart.getInfo()))
+                    .flatMap(_r -> updatePartial(mandalart.getGoal().getChildren().get(1), mandalart.getInfo()))
+                    .flatMap(_r -> updatePartial(mandalart.getGoal().getChildren().get(2), mandalart.getInfo()))
+                    .flatMap(_r -> updatePartial(mandalart.getGoal().getChildren().get(3), mandalart.getInfo()))
+                    .subscribe()
+            );
     }
 
     @Override

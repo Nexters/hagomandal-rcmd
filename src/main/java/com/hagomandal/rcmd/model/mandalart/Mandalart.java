@@ -1,4 +1,4 @@
-package com.hagomandal.rcmd.model.input;
+package com.hagomandal.rcmd.model.mandalart;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

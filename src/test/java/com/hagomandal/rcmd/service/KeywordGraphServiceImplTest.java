@@ -3,7 +3,7 @@ package com.hagomandal.rcmd.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.hagomandal.rcmd.TestUtils;
 import com.hagomandal.rcmd.component.MorphemeAnalyser;
-import com.hagomandal.rcmd.model.input.Mandalart;
+import com.hagomandal.rcmd.model.mandalart.Mandalart;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
