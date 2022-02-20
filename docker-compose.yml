@@ -6,6 +6,8 @@ services:
     ports:
       - 7687:7687
       - 7474:7474
+    volumes:
+      - $HOME/neo4j/data:/data
     environment:
       - NEO4J_AUTH=neo4j/VzV3h2NM
     networks:
@@ -16,9 +18,12 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
+    volumes:
+      - $HOME/es/data:/data
+      - $HOME/es/logs:/logs
     environment:
       discovery.type: single-node
-      ES_JAVA_OPTS: -Xms1g -Xmx1g
+      ES_JAVA_OPTS: -Xms2g -Xmx2g
     networks:
       - mandal
 
