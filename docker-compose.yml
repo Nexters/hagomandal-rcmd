@@ -19,8 +19,8 @@ services:
       - 9200:9200
       - 9300:9300
     volumes:
-      - $HOME/es/data:/data
-      - $HOME/es/logs:/logs
+      - $HOME/es/data:/usr/share/elasticsearch/data
+      - $HOME/es/logs:/usr/share/elasticsearch/logs
     environment:
       discovery.type: single-node
       ES_JAVA_OPTS: -Xms2g -Xmx2g
