@@ -6,6 +6,7 @@ import com.hagomandal.rcmd.model.graph.synonym.SynonymRelationship;
 import com.hagomandal.rcmd.model.graph.synonym.WordEntity;
 import com.hagomandal.rcmd.repository.SynonymRepository;
 import java.io.IOException;
+import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -48,6 +49,8 @@ public class SynonymGraphServiceImpl implements SynonymGraphService {
             dictPath = Paths.get(dictResource.getURI());
         } catch (IOException e) {
             return "failed to load synonym dictionary: " + e;
+        } catch (FileSystemNotFoundException e) {
+            dictPath = Paths.get("dict", "synonym.dict");
         }
 
         resetGraphWithDict(dictPath);

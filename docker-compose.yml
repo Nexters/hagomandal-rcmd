@@ -1,0 +1,42 @@
+version: "3.7"
+
+services:
+  neo4j:
+    image: neo4j:4.4.3
+    ports:
+      - 7687:7687
+      - 7474:7474
+    environment:
+      - NEO4J_AUTH=neo4j/VzV3h2NM
+    networks:
+      - mandal
+
+  es:
+    build: ./es-docker/
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - discovery.type=single-node
+    networks:
+      - mandal
+
+  app:
+    build: .
+    ports:
+      - 80:8080
+    environment:
+      - NEO4J_HOST=neo4j
+      - NEO4J_PORT=7687
+      - NEO4J_USERNAME=neo4j
+      - NEO4J_PASSWORD=VzV3h2NM
+      - ES_HOST=es
+      - ES_PORT=9200
+    depends_on:
+      - neo4j
+      - es
+    networks:
+      - mandal
+
+networks:
+  mandal:
