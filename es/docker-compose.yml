@@ -11,6 +11,6 @@ services:
       - $HOME/es/logs:/usr/share/elasticsearch/logs
     environment:
       discovery.type: single-node
-      ES_JAVA_OPTS: -Xms2g -Xmx2g
+      ES_JAVA_OPTS: -Xms1g -Xmx1g
     networks:
       - default
